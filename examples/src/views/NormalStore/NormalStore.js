@@ -1,21 +1,23 @@
-import {Fragment, memo} from "react";
-import {createStore} from "../../../../src/createStore";
-import {devtools} from "../../../../src/middlewares/devtools";
-import {persist} from "../../../../src/middlewares/persist";
-import {Code} from "./Code";
+import { Fragment, memo } from "react";
+import { createStore } from "../../../../src/createStore";
+import { devtools } from "../../../../src/middlewares/devtools";
+import { persist } from "../../../../src/middlewares/persist";
+import { Code } from "./Code";
 
 const useCountStore = createStore(
   devtools(
     persist(
-    (set, get) => ({
-      count: 0,
-      increment: () =>
-        set((store) => ({ ...store, count: store.count + 1 }), 'increment'),
-      decrement: () =>
-        set((store) => ({ ...store, count: store.count - 1 }), 'decrement'),
-    }),
-      {name:'normal-store'}
-  ), 'counter')
+      (set, get) => ({
+        count: 0,
+        increment: () =>
+          set((store) => ({ ...store, count: store.count + 1 }), "increment"),
+        decrement: () =>
+          set((store) => ({ ...store, count: store.count - 1 }), "decrement"),
+      }),
+      { name: "normal-store" }
+    ),
+    "counter"
+  )
 );
 
 const Increment = memo(() => {
@@ -24,8 +26,8 @@ const Increment = memo(() => {
 });
 
 const Decrement = memo(() => {
-  const { decrementAction, dispatch } = useCountStore();
-  return <button onClick={() => dispatch(decrementAction)}>decrement</button>;
+  const { decrement } = useCountStore();
+  return <button onClick={decrement}>decrement</button>;
 });
 
 const Count = memo(() => {
@@ -35,9 +37,9 @@ const Count = memo(() => {
 
 export const NormalStore = () => (
   <Fragment>
-    <Count/>
-    <Increment/>
-    <Decrement/>
-    <Code/>
+    <Count />
+    <Increment />
+    <Decrement />
+    <Code />
   </Fragment>
-)
+);

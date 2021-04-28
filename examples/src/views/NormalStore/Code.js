@@ -22,8 +22,8 @@ const codeString =
   '});\n' +
   '\n' +
   'const Decrement = memo(() => {\n' +
-  '  const { decrementAction, dispatch } = useCountStore();\n' +
-  '  return <button onClick={() => dispatch(decrementAction)}>decrement</button>;\n' +
+  '  const { decrement } = useCountStore();\n' +
+  '  return <button onClick={decrement}>decrement</button>;\n' +
   '});\n' +
   '\n' +
   'const Count = memo(() => {\n' +

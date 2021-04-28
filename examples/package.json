@@ -1,5 +1,6 @@
 {
   "name": "examples",
+  "homepage": "https://pernilsalat.github.io/jasl/",
   "version": "0.0.1",
   "private": true,
   "peerDependencies": {

@@ -1,6 +1,6 @@
-import { useLayoutEffect, useState } from 'react';
-import { pipeActions } from './utils/pipe';
-import {identity} from "./utils/functions";
+import { useLayoutEffect, useState } from "react";
+import { pipeActions } from "./utils/pipe";
+import { identity } from "./utils/functions";
 
 const createEmitter = () => {
   const subscriptions = new Map();

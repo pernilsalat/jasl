@@ -81,7 +81,7 @@ export const persist = (init, options) => (set, get, api) => {
         } else {
           set(
             (state) => merge({}, state, deserializedStorageValue.state),
-            '@@HYDRATE'
+            "@@HYDRATE"
           );
         }
       }
