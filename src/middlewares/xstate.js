@@ -1,6 +1,6 @@
-import {noop} from "../utils/functions";
-import {interpret, State} from "xstate";
-import {camelize} from "../utils/string";
+import { noop } from "../utils/functions";
+import { interpret, State } from "xstate";
+import { camelize } from "../utils/string";
 
 export const xstate = (
   initMachine,
@@ -21,16 +21,18 @@ export const xstate = (
       if (serviceState.changed && serviceState.value !== get().state)
         set(
           (state) => ({ ...state, state: serviceState.value }),
-          'stateUpdate'
+          "stateUpdate"
         );
       onTransition(serviceState);
     }
   );
   api.onMount.add(() => {
-    const state = get();
-    // console.log(State.create(service.machine.states[state]))
-    // console.log(state);
-    service.start();
+    function start() {
+      const { state } = get();
+      service.start(state);
+    }
+    const { value, then } = api.loading;
+    value ? then(start) : start();
   });
   api.onUnmount.add(() => service.stop());
   api.service = service;

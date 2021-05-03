@@ -1,4 +1,4 @@
-import merge from 'lodash.merge'
+import merge from "lodash.merge";
 
 export const persist = (init, options) => (set, get, api) => {
   const {
@@ -55,9 +55,13 @@ export const persist = (init, options) => (set, get, api) => {
     savedSetState(state, replace);
     void setItem();
   };
+  api.loading = {
+    value: true,
+    then: (callback) => promise.then(callback),
+  };
 
   // rehydrate initial state with existing stored state
-  (async () => {
+  const promise = (async () => {
     const postRehydrationCallback = onRehydrateStorage?.(get()) || undefined;
 
     try {
@@ -72,17 +76,16 @@ export const persist = (init, options) => (set, get, api) => {
             deserializedStorageValue.version
           );
           if (migratedState) {
-            set(
-              (state) => merge({}, state, migratedState),
-              '@@MIGRATED'
-            );
+            set((state) => merge({}, state, migratedState), "@@MIGRATED");
             await setItem();
+            api.loading.value = false;
           }
         } else {
           set(
             (state) => merge({}, state, deserializedStorageValue.state),
             "@@HYDRATE"
           );
+          api.loading.value = false;
         }
       }
     } catch (e) {
