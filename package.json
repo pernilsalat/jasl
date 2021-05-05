@@ -1,6 +1,6 @@
 {
   "name": "jasl",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "just another state library",
   "main": "src/index.js",
   "files": [
