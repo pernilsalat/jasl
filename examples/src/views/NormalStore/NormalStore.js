@@ -1,7 +1,5 @@
 import { Fragment, memo } from "react";
-import { createStore } from "../../../../src/createStore";
-import { devtools } from "../../../../src/middlewares/devtools";
-import { persist } from "../../../../src/middlewares/persist";
+import { createStore, devtools, persist } from "jasl";
 import { Code } from "./Code";
 
 const useCountStore = createStore(

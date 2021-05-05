@@ -1,15 +1,12 @@
-import {Fragment, memo} from "react";
-import {createStore} from "../../../../src/createStore";
-import {devtools} from "../../../../src/middlewares/devtools";
-import {redux} from "../../../../src/middlewares/redux";
-import {persist} from "../../../../src/middlewares/persist";
-import {Code} from "./Code";
+import { Fragment, memo } from "react";
+import { Code } from "./Code";
+import { createStore, devtools, redux, persist } from "jasl";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'increment':
+    case "increment":
       return { ...state, count: state.count + 1 };
-    case 'decrement':
+    case "decrement":
       return { ...state, count: state.count - 1 };
     default:
       return state;
@@ -21,12 +18,12 @@ const useCountStoreRedux = createStore(
     persist(
       redux(reducer, (set, get, api) => ({
         count: 0,
-        increment: () => api.dispatch({ type: 'increment' }),
-        decrementAction: { type: 'decrement' },
+        increment: () => api.dispatch({ type: "increment" }),
+        decrementAction: { type: "decrement" },
       })),
-      { name: 'count-redux' }
+      { name: "count-redux" }
     ),
-    'counterRedux'
+    "counterRedux"
   )
 );
 
@@ -49,9 +46,9 @@ const Count = memo(() => {
 
 export const ReduxStore = () => (
   <Fragment>
-    <Count/>
-    <Increment/>
-    <Decrement/>
-    <Code/>
+    <Count />
+    <Increment />
+    <Decrement />
+    <Code />
   </Fragment>
-)
+);
