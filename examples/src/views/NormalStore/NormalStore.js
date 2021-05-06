@@ -1,5 +1,6 @@
-import { Fragment, memo } from "react";
+import { Fragment } from "react";
 import { createStore, devtools, persist } from "jasl";
+// import { createStore, devtools, persist } from "../../../../src";
 import { Code } from "./Code";
 
 const useCountStore = createStore(
@@ -18,20 +19,20 @@ const useCountStore = createStore(
   )
 );
 
-const Increment = memo(() => {
-  const { increment } = useCountStore();
+const Increment = () => {
+  const increment = useCountStore((state) => state.increment);
   return <button onClick={increment}>increment</button>;
-});
+};
 
-const Decrement = memo(() => {
-  const { decrement } = useCountStore();
+const Decrement = () => {
+  const decrement = useCountStore(({ decrement }) => decrement);
   return <button onClick={decrement}>decrement</button>;
-});
+};
 
-const Count = memo(() => {
+const Count = () => {
   const count = useCountStore((state) => state.count * 2);
   return <h1>{count}</h1>;
-});
+};
 
 export const NormalStore = () => (
   <Fragment>

@@ -1,7 +1,8 @@
-import { Fragment, memo } from "react";
+import { Fragment } from "react";
 import { Machine } from "xstate";
 import { Code } from "./Code";
 import { createStore, devtools, xstate, persist } from "jasl";
+// import { createStore, devtools, xstate, persist } from "../../../../src";
 
 const useToggleMachineStore = createStore(
   devtools(
@@ -44,9 +45,8 @@ const useToggleMachineStore = createStore(
   )
 );
 
-const Light = memo(() => {
+const Light = () => {
   const { state, context } = useToggleMachineStore();
-
   return (
     <Fragment>
       <h1>
@@ -57,12 +57,12 @@ const Light = memo(() => {
       <div>toggle count: {context.times}</div>
     </Fragment>
   );
-});
+};
 
-const Toggle = memo(() => {
-  const { sendEvent } = useToggleMachineStore();
+const Toggle = () => {
+  const sendEvent = useToggleMachineStore((state) => state.sendEvent);
   return <button onClick={() => sendEvent.toggle()}>toggle</button>;
-});
+};
 
 export const XstateStore = () => (
   <Fragment>
