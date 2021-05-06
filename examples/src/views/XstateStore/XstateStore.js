@@ -1,10 +1,8 @@
-import {Fragment, memo} from "react";
-import {createStore} from "../../../../src/createStore";
-import {devtools} from "../../../../src/middlewares/devtools";
-import {xstate} from "../../../../src/middlewares/xstate";
-import {persist} from "../../../../src/middlewares/persist";
-import {Machine} from "xstate";
-import {Code} from "./Code";
+import { Fragment } from "react";
+import { Machine } from "xstate";
+import { Code } from "./Code";
+import { createStore, devtools, xstate, persist } from "jasl";
+// import { createStore, devtools, xstate, persist } from "../../../../src";
 
 const useToggleMachineStore = createStore(
   devtools(
@@ -13,17 +11,17 @@ const useToggleMachineStore = createStore(
         (set, get, api) =>
           Machine(
             {
-              id: 'toggle',
-              initial: 'active',
+              id: "toggle",
+              initial: "active",
               states: {
                 active: {
                   on: {
-                    TOGGLE: { target: 'inactive', actions: 'incrementCount' },
+                    TOGGLE: { target: "inactive", actions: "incrementCount" },
                   },
                 },
                 inactive: {
                   on: {
-                    TOGGLE: { target: 'active', actions: 'incrementCount' },
+                    TOGGLE: { target: "active", actions: "incrementCount" },
                   },
                 },
               },
@@ -33,7 +31,7 @@ const useToggleMachineStore = createStore(
                 incrementCount() {
                   set(
                     (context) => ({ ...context, times: context.times + 1 }),
-                    'incrementCount'
+                    "incrementCount"
                   );
                 },
               },
@@ -41,36 +39,35 @@ const useToggleMachineStore = createStore(
           ),
         { times: 0 }
       ),
-      { name: 'xstate-counter' }
+      { name: "xstate-counter" }
     ),
-    'toggle'
+    "toggle"
   )
 );
 
-const Light = memo(() => {
+const Light = () => {
   const { state, context } = useToggleMachineStore();
-
   return (
     <Fragment>
       <h1>
         the light is:
         <br />
-        {state === 'active' ? 'open' : 'close'}
+        {state === "active" ? "open" : "close"}
       </h1>
       <div>toggle count: {context.times}</div>
     </Fragment>
   );
-});
+};
 
-const Toggle = memo(() => {
-  const { sendEvent } = useToggleMachineStore();
+const Toggle = () => {
+  const sendEvent = useToggleMachineStore((state) => state.sendEvent);
   return <button onClick={() => sendEvent.toggle()}>toggle</button>;
-});
+};
 
 export const XstateStore = () => (
   <Fragment>
     <Light />
     <Toggle />
-    <Code/>
+    <Code />
   </Fragment>
-)
+);
