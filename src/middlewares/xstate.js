@@ -17,7 +17,6 @@ export const xstate = (
   const machine = initMachine(contextSet, get, api);
   const service = interpret(machine, interpretOptions).onTransition(
     (serviceState) => {
-      // if (serviceState.changed) debugger;
       if (serviceState.changed && serviceState.value !== get().state)
         set(
           (state) => ({ ...state, state: serviceState.value }),
