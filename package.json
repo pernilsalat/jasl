@@ -1,6 +1,6 @@
 {
   "name": "jasl",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "just another state library",
   "main": "src/index.js",
   "files": [
@@ -48,7 +48,8 @@
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"},
+    "react-dom": "^17.0.2"
+  },
   "peerDependencies": {
     "react": ">=16.8"
   }
