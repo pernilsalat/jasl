@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { pipeActions } from "./utils/pipe";
 import { identity } from "./utils/functions";
 
@@ -25,31 +25,43 @@ export const createStore = (init) => {
     emitter.emit(store);
   };
 
-  const subscribe = (listener) => emitter.subscribe(listener);
+  // const subscribe = (listener) => emitter.subscribe(listener);
   const api = {
     getState,
     setState,
-    subscribe,
+    // subscribe,
     onMount: pipeActions(),
     onUnmount: pipeActions(),
   };
   store = init(setState, getState, api);
 
-  const useStore = (selector = identity, equalFn = Object.is) => {
+  const useStore = (selector = identity, equalityFn = Object.is) => {
     const [localStore, setLocalStore] = useState(() => selector(getState()));
     const currentSlice = useRef(localStore);
+    const selectorRef = useRef(null);
+    const equalityFnRef = useRef(null);
+
+    const updateLocalStoreIfChanged = useCallback((nextStore = getState()) => {
+      const nextSlice = selectorRef.current(nextStore);
+      if (!equalityFnRef.current(currentSlice.current, nextSlice)) {
+        currentSlice.current = nextSlice;
+        setLocalStore(nextSlice);
+      }
+    }, []);
+
+    useLayoutEffect(() => {
+      const firstTime = !selectorRef.current;
+      selectorRef.current = selector;
+      equalityFnRef.current = equalityFn;
+      if (!firstTime) updateLocalStoreIfChanged();
+    }, [selector, equalityFn]);
 
     useLayoutEffect(() => {
       api.onMount.execute();
-      const subscribeWithSelector = (nextStore) => {
-        const nextSlice = selector(nextStore);
-        if (!equalFn(currentSlice.current, nextSlice)) {
-          currentSlice.current = nextSlice;
-          setLocalStore(nextSlice);
-        }
-      };
       const unsubscribe = emitter.subscribe(
-        Object.is(selector, identity) ? setLocalStore : subscribeWithSelector
+        Object.is(selectorRef.current, identity)
+          ? setLocalStore
+          : updateLocalStoreIfChanged
       );
       return () => {
         unsubscribe();
@@ -59,6 +71,8 @@ export const createStore = (init) => {
 
     return localStore;
   };
+
+  Object.assign(useStore, api);
 
   return useStore;
 };
