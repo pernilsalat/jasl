@@ -132,7 +132,7 @@ describe("basic tests", () => {
       const value = useStoreHook(selector, equalityFn);
       return (
         <div>
-          renderCount: {++renderCount}, value: {value}{" "}
+          renderCount: {++renderCount}, value: {value}
         </div>
       );
     }
@@ -202,30 +202,70 @@ describe("basic tests", () => {
         inlineSelectorCallCount++;
         return s.b;
       });
-      useStoreHook(staticSelectorA)
+      useStoreHook(staticSelectorA);
       return (
         <>
           <div>inline: {inlineSelectorCallCount}</div>
           <div>static: {staticSelectorCallCount}</div>
         </>
-      )
+      );
     }
 
-    const { rerender, findByText } = render(<Component />)
-    await findByText('inline: 1')
-    await findByText('static: 1')
+    const { rerender, findByText } = render(<Component />);
+    // await findByText('inline: 1')
+    // await findByText('static: 1')
+    expect(inlineSelectorCallCount).toBe(1);
+    expect(staticSelectorCallCount).toBe(1);
 
-    // rerender(<Component />)
+    rerender(<Component />);
+    expect(inlineSelectorCallCount).toBe(2);
+    expect(staticSelectorCallCount).toBe(1);
     // await findByText('inline: 2')
     // await findByText('static: 1')
-    //
-    // act(() => setState(() => ({ a: 1, b: 1 })))
+
+    act(() => setState(() => ({ a: 1, b: 1 })));
+    expect(inlineSelectorCallCount).toBe(4);
+    expect(staticSelectorCallCount).toBe(2);
     // await findByText('inline: 4')
     // await findByText('static: 2')
-
   });
 
-  test("", async () => {});
+  test("ensures parent components subscribe before children", async () => {
+    const useStoreHook = createStore(() => ({
+      children: {
+        1: { text: "child 1" },
+        2: { text: "child 2" },
+      },
+    }));
+    const { setState } = useStoreHook;
+    const changeState = () =>
+      setState((s) => ({
+        children: {
+          ...s.children,
+          3: { text: "child 3" },
+        },
+      }));
+    function Child({ id }) {
+      const text = useStoreHook((s) => s.children[id].text);
+      return <div>{text}</div>;
+    }
 
-  test("", async () => {});
+    function Parent() {
+      const children = useStoreHook((s) => s.children);
+      return (
+        <>
+          <button onClick={changeState}>change state</button>
+          {Object.keys(children).map((id) => (
+            <Child id={id} key={id} />
+          ))}
+        </>
+      );
+    }
+
+    const { getByText, findByText } = render(<Parent />)
+
+    fireEvent.click(getByText('change state'))
+
+    await findByText('child 3')
+  });
 });

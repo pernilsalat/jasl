@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { pipeActions } from "./utils/pipe";
 import { identity } from "./utils/functions";
 
@@ -44,8 +38,8 @@ export const createStore = (init) => {
   const useStore = (selector = identity, equalityFn = Object.is) => {
     const [localStore, setLocalStore] = useState(() => selector(getState()));
     const currentSlice = useRef(localStore);
-    const selectorRef = useRef(selector);
-    const equalityFnRef = useRef(equalityFn);
+    const selectorRef = useRef(null);
+    const equalityFnRef = useRef(null);
 
     const updateLocalStoreIfChanged = useCallback((nextStore = getState()) => {
       const nextSlice = selectorRef.current(nextStore);
@@ -56,9 +50,10 @@ export const createStore = (init) => {
     }, []);
 
     useLayoutEffect(() => {
+      const firstTime = !selectorRef.current;
       selectorRef.current = selector;
       equalityFnRef.current = equalityFn;
-      updateLocalStoreIfChanged();
+      if (!firstTime) updateLocalStoreIfChanged();
     }, [selector, equalityFn]);
 
     useLayoutEffect(() => {
