@@ -24,6 +24,10 @@ export const createStore = (init) => {
     store = operation(store);
     emitter.emit(store);
   };
+  const mergeState = (operation) => {
+    store = { ...store, ...operation(store) };
+    emitter.emit(store);
+  };
 
   // const subscribe = (listener) => emitter.subscribe(listener);
   const api = {
@@ -33,7 +37,7 @@ export const createStore = (init) => {
     onMount: pipeActions(),
     onUnmount: pipeActions(),
   };
-  store = init(setState, getState, api);
+  store = init(mergeState, getState, api);
 
   const useStore = (selector = identity, equalityFn = Object.is) => {
     const [localStore, setLocalStore] = useState(() => selector(getState()));

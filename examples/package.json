@@ -7,7 +7,7 @@
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
-    "jasl": "0.2.0",
+    "jasl": "^0.3.0",
     "react": "link:../node_modules/react",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
