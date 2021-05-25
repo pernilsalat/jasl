@@ -8,9 +8,9 @@ const codeString =
   '      (set, get) => ({\n' +
   '        count: 0,\n' +
   '        increment: () =>\n' +
-  '          set((store) => ({ ...store, count: store.count + 1 }), "increment"),\n' +
+  '          set((store) => ({ count: store.count + 1 }), "increment"),\n' +
   '        decrement: () =>\n' +
-  '          set((store) => ({ ...store, count: store.count - 1 }), "decrement"),\n' +
+  '          set((store) => ({ count: store.count - 1 }), "decrement"),\n' +
   '      }),\n' +
   '      { name: "normal-store" }\n' +
   '    ),\n' +

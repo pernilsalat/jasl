@@ -28,7 +28,7 @@ const codeString =
   '              actions: {\n' +
   '                incrementCount() {\n' +
   '                  set(\n' +
-  '                    (context) => ({ ...context, times: context.times + 1 }),\n' +
+  '                    (context) => ({ times: context.times + 1 }),\n' +
   '                    "incrementCount"\n' +
   '                  );\n' +
   '                },\n' +

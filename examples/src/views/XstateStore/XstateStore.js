@@ -30,7 +30,7 @@ const useToggleMachineStore = createStore(
               actions: {
                 incrementCount() {
                   set(
-                    (context) => ({ ...context, times: context.times + 1 }),
+                    (context) => ({ times: context.times + 1 }),
                     "incrementCount"
                   );
                 },
