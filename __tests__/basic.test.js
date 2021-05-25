@@ -33,7 +33,7 @@ describe("basic tests", () => {
   test("uses the store hook with selector", async () => {
     const useStoreHook = createStore((set) => ({
       count: 0,
-      inc: () => set((state) => ({ ...state, count: state.count + 1 })),
+      inc: () => set((state) => ({ count: state.count + 1 })),
     }));
 
     function Counter() {
@@ -52,7 +52,7 @@ describe("basic tests", () => {
   test("only re-renders if selected state has changed", async () => {
     const useStoreHook = createStore((set) => ({
       count: 0,
-      inc: () => set((state) => ({ ...state, count: state.count + 1 })),
+      inc: () => set((state) => ({ count: state.count + 1 })),
     }));
     let counterRenderCount = 0;
     let controlRenderCount = 0;
@@ -85,7 +85,7 @@ describe("basic tests", () => {
   test("can batch updates", async () => {
     const useStoreHook = createStore((set) => ({
       count: 0,
-      inc: () => set((state) => ({ ...state, count: state.count + 1 })),
+      inc: () => set((state) => ({ count: state.count + 1 })),
     }));
 
     function Counter() {
@@ -162,8 +162,8 @@ describe("basic tests", () => {
   test("can set the store", () => {
     const { getState, setState } = createStore((set) => ({
       value: 1,
-      setState1: (a) => set((state) => ({ ...state, ...a })),
-      setState2: (a) => setState((state) => ({ ...state, ...a })),
+      setState1: (a) => set(() => a),
+      setState2: (a) => setState(() => a),
     }));
 
     getState().setState1({ value: 2 });
