@@ -29,11 +29,11 @@ export const createStore = (init) => {
     emitter.emit(store);
   };
 
-  // const subscribe = (listener) => emitter.subscribe(listener);
+  const subscribe = (listener) => emitter.subscribe(listener);
   const api = {
     getState,
     setState,
-    // subscribe,
+    subscribe,
     onMount: pipeActions(),
     onUnmount: pipeActions(),
   };
