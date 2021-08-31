@@ -3,14 +3,12 @@ import { pipeActions } from "./utils/pipe";
 import { identity } from "./utils/functions";
 
 const createEmitter = () => {
-  const subscriptions = new Map();
-
+  const subscriptions = new Set();
   return {
     emit: (value) => subscriptions.forEach((fn) => fn(value)),
     subscribe: (fn) => {
-      const key = Symbol();
-      subscriptions.set(key, fn);
-      return () => subscriptions.delete(key);
+      subscriptions.add(fn);
+      return () => subscriptions.delete(fn);
     },
   };
 };
