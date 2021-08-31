@@ -9,9 +9,9 @@ const useCountStore = createStore(
       (set, get) => ({
         count: 0,
         increment: () =>
-          set((store) => ({ ...store, count: store.count + 1 }), "increment"),
+          set((store) => ({ count: store.count + 1 }), "increment"),
         decrement: () =>
-          set((store) => ({ ...store, count: store.count - 1 }), "decrement"),
+          set((store) => ({ count: store.count - 1 }), "decrement"),
       }),
       { name: "normal-store" }
     ),

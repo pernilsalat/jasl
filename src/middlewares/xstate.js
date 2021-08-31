@@ -10,7 +10,7 @@ export const xstate = (
 ) => (set, get, api) => {
   const contextSet = (operation, ...options) => {
     set(
-      (state) => ({ ...state, context: operation(state.context) }),
+      (state) => ({ context: operation(state.context) }),
       ...options
     );
   };
@@ -19,7 +19,7 @@ export const xstate = (
     (serviceState) => {
       if (serviceState.changed && serviceState.value !== get().state)
         set(
-          (state) => ({ ...state, state: serviceState.value }),
+          (state) => ({ state: serviceState.value }),
           "stateUpdate"
         );
       onTransition(serviceState);
