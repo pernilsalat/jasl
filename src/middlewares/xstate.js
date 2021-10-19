@@ -1,5 +1,5 @@
 import { noop } from "../utils/functions";
-import { interpret, State } from "xstate";
+import { interpret } from "xstate";
 import { camelize } from "../utils/string";
 
 export const xstate = (
@@ -19,13 +19,13 @@ export const xstate = (
     (serviceState) => {
       if (serviceState.changed && serviceState.value !== get().state)
         set(
-          (state) => ({ state: serviceState.value }),
+          () => ({ state: serviceState.value }),
           "stateUpdate"
         );
       onTransition(serviceState);
     }
   );
-  api.onMount.add(() => {
+  api.onMount(() => {
     function start() {
       const { state } = get();
       service.start(state);
@@ -33,7 +33,7 @@ export const xstate = (
     const { value, then } = api.loading;
     value ? then(start) : start();
   });
-  api.onUnmount.add(() => service.stop());
+  api.onUnmount(() => service.stop());
   api.service = service;
 
   const { initialStateValue, events } = machine;
