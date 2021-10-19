@@ -1,12 +1,12 @@
 export const pipe = (...fns) => (value) =>
   fns.reduce((acc, act) => act(acc), value);
 
-export const pipeActions = () => ({
-  actions: [],
-  add(action) {
-    this.actions.push(action);
-  },
-  execute() {
-    pipe(...this.actions)();
-  },
-});
+export const pipeActions = () => {
+  const _actions = [];
+  const addAction = (action) => {
+    _actions.push(action);
+  };
+  const execute = () => pipe(..._actions)();
+
+  return Object.assign(addAction, { execute });
+};
